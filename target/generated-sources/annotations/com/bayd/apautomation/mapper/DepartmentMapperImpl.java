@@ -1,6 +1,6 @@
 package com.bayd.apautomation.mapper;
 
-import com.bayd.apautomation.dto.DepartmentDto;
+import com.bayd.apautomation.dto.DepartmentDTO;
 import com.bayd.apautomation.entity.Department;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,45 +8,47 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-05T19:18:16-0500",
+    date = "2023-02-07T21:36:09-0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 1.8.0_351 (Oracle Corporation)"
 )
 public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Override
-    public Department convertEntity(DepartmentDto arg0) {
-        if ( arg0 == null ) {
+    public Department convertEntity(DepartmentDTO s) {
+        if ( s == null ) {
             return null;
         }
 
         Department department = new Department();
 
-        department.setName( arg0.getName() );
+        department.setDeptid( s.getDeptid() );
+        department.setName( s.getName() );
 
         return department;
     }
 
     @Override
-    public DepartmentDto convertDto(Department arg0) {
-        if ( arg0 == null ) {
+    public DepartmentDTO convertDto(Department t) {
+        if ( t == null ) {
             return null;
         }
 
-        DepartmentDto departmentDto = new DepartmentDto();
+        DepartmentDTO departmentDTO = new DepartmentDTO();
 
-        departmentDto.setName( arg0.getName() );
+        departmentDTO.setDeptid( t.getDeptid() );
+        departmentDTO.setName( t.getName() );
 
-        return departmentDto;
+        return departmentDTO;
     }
 
     @Override
-    public List<DepartmentDto> convertDtos(List<Department> arg0) {
-        if ( arg0 == null ) {
+    public List<DepartmentDTO> convertDtos(List<Department> tList) {
+        if ( tList == null ) {
             return null;
         }
 
-        List<DepartmentDto> list = new ArrayList<DepartmentDto>( arg0.size() );
-        for ( Department department : arg0 ) {
+        List<DepartmentDTO> list = new ArrayList<DepartmentDTO>( tList.size() );
+        for ( Department department : tList ) {
             list.add( convertDto( department ) );
         }
 
@@ -54,14 +56,14 @@ public class DepartmentMapperImpl implements DepartmentMapper {
     }
 
     @Override
-    public List<Department> convertEntities(List<DepartmentDto> arg0) {
-        if ( arg0 == null ) {
+    public List<Department> convertEntities(List<DepartmentDTO> sList) {
+        if ( sList == null ) {
             return null;
         }
 
-        List<Department> list = new ArrayList<Department>( arg0.size() );
-        for ( DepartmentDto departmentDto : arg0 ) {
-            list.add( convertEntity( departmentDto ) );
+        List<Department> list = new ArrayList<Department>( sList.size() );
+        for ( DepartmentDTO departmentDTO : sList ) {
+            list.add( convertEntity( departmentDTO ) );
         }
 
         return list;

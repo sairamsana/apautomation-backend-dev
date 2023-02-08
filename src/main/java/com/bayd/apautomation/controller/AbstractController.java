@@ -11,7 +11,7 @@ public interface AbstractController {
         return ResponseEntity.ok(response);
     }
 
-    default ResponseEntity<ResponseDTO> getResponseWithData(Status status, Object o){
+    default ResponseEntity<ResponseDTO> getResponseWithData(Status status, Object o) {
         ResponseDTO response = new ResponseDTO();
         response.setStatus(status);
         response.setData(o);
@@ -24,4 +24,6 @@ public interface AbstractController {
         response.setMessage(o);
         return ResponseEntity.ok(response);
     }
+
+
 }

@@ -8,10 +8,12 @@ import com.bayd.apautomation.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,17 +33,16 @@ public class LoginController implements AbstractController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/signup")
     public ResponseEntity<ResponseDTO> userRegister(@RequestBody UserDto userDto) {
         Optional<UserDto> save = Optional.empty();
-        try{
+        try {
             save = userService.saved(userDto);
-        }
-        catch (Exception e){
-            return getResponseWithErrorData(Status.NOT_FOUND,e.getMessage());
+        } catch (Exception e) {
+            return getResponseWithErrorData(Status.NOT_FOUND, e.getMessage());
         }
 
         return !save.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, save.get());
     }
 
-    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE, value = "logins")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "logins")
     public ResponseEntity<ResponseDTO> getUserLogin() {
         ResponseDTO response = new ResponseDTO();
         return ResponseEntity.ok(response);

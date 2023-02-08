@@ -1,11 +1,13 @@
 package com.bayd.apautomation.controller;
 
 
-import com.bayd.apautomation.dto.DepartmentDTO;
+import com.bayd.apautomation.dto.StoreDTO;
 import com.bayd.apautomation.dto.DepartmentsDTO;
 import com.bayd.apautomation.dto.ResponseDTO;
+import com.bayd.apautomation.dto.StoresDTO;
 import com.bayd.apautomation.enums.Status;
 import com.bayd.apautomation.service.DepartmentService;
+import com.bayd.apautomation.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +17,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/store")
 @RequiredArgsConstructor
-public class DepartmentController implements AbstractController {
+public class StoreController implements AbstractController {
 
-    private final DepartmentService departmentService;
+    private final StoreService storeService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/save")
-    public ResponseEntity<ResponseDTO> save(@RequestBody DepartmentDTO DepartmentDTO, @RequestParam(name = "userId", required = false) UUID userUUID) {
-        Optional<DepartmentDTO> save = Optional.empty();
+    public ResponseEntity<ResponseDTO> save(@RequestBody StoreDTO StoreDTO, @RequestParam(name = "userId", required = false) UUID userUUID) {
+        Optional<StoreDTO> save = Optional.empty();
         try {
-            save = departmentService.save(DepartmentDTO, userUUID);
+            save = storeService.save(StoreDTO, userUUID);
         } catch (Exception e) {
             return getResponseWithErrorData(Status.NOT_FOUND, e.getMessage());
         }
@@ -34,19 +36,19 @@ public class DepartmentController implements AbstractController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{uuid}")
     public ResponseEntity<ResponseDTO> get(@PathVariable("uuid") UUID uuid) {
-        Optional<DepartmentDTO> DepartmentDTO = departmentService.get(uuid);
-        return !DepartmentDTO.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, DepartmentDTO.get());
+        Optional<StoreDTO> StoreDTO = storeService.get(uuid);
+        return !StoreDTO.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, StoreDTO.get());
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/all")
     public ResponseEntity<ResponseDTO> getAllDepartments() {
-        DepartmentsDTO departmentsDTO = departmentService.getAllDepartments();
-        return departmentsDTO.getDepartmentsDTO().isEmpty() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, departmentsDTO);
+        StoresDTO storesDTO = storeService.getAllStores();
+        return storesDTO.getStoreDTOS().isEmpty() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, storesDTO);
     }
 
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{uuid}")
     public ResponseEntity<ResponseDTO> delete(@PathVariable("uuid") UUID id) {
-        return getResponse(departmentService.delete(id));
+        return getResponse(storeService.delete(id));
     }
 
 

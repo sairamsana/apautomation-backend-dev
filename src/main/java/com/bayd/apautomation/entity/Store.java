@@ -12,21 +12,21 @@ import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "Departments", schema = "apautomation")
+@Table(name = "Stores", schema = "apautomation")
 @Data
 @AllArgsConstructor
 @Builder
 @ToString
-public class Department extends AbstractEntity implements Serializable {
+public class Store extends AbstractEntity implements Serializable {
     @Id
     @Type(type = "uuid-char")
-    @Column(name = "deptid")
-    private UUID deptid;
+    @Column(name = "storeid")
+    private UUID storeid;
     @Column(name = "name")
     private String name;
 
-    public Department() {
-        this.deptid = UUID.randomUUID();
+    public Store() {
+        this.storeid = UUID.randomUUID();
     }
 
 }

@@ -8,5 +8,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface UserMapper extends com.bayd.apautomation.mapper.Mapper<User, UserDto> {
-    UserMapper INSTANCE= Mappers.getMapper(UserMapper.class);
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 }

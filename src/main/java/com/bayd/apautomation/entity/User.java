@@ -19,7 +19,7 @@ import java.util.UUID;
 @ToString
 public class User extends AbstractEntity implements Serializable {
     @Id
-    @Type(type="uuid-char")
+    @Type(type = "uuid-char")
     @Column(name = "userid")
     private UUID userid;
     @Column(name = "firstname")

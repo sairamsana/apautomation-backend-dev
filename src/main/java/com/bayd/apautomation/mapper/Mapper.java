@@ -15,7 +15,8 @@ public interface Mapper<T extends AbstractEntity, S> extends SMapper<T, S> {
         t.setIsactive(true);
         t.setIsdeleted(false);
     }
-    default void prepareForDelete(T t){
+
+    default void prepareForDelete(T t) {
         t.setIsdeleted(true);
         t.setIsactive(false);
         prepareForUpdate(t);

@@ -8,57 +8,57 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-05T19:18:16-0500",
+    date = "2023-02-07T21:36:09-0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 1.8.0_351 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public User convertEntity(UserDto arg0) {
-        if ( arg0 == null ) {
+    public User convertEntity(UserDto s) {
+        if ( s == null ) {
             return null;
         }
 
-        User.UserBuilder user = User.builder();
+        User user = new User();
 
-        user.userid( arg0.getUserid() );
-        user.firstname( arg0.getFirstname() );
-        user.lastname( arg0.getLastname() );
-        user.password( arg0.getPassword() );
-        user.email( arg0.getEmail() );
-        user.mobile( arg0.getMobile() );
-        user.isverified( arg0.getIsverified() );
+        user.setUserid( s.getUserid() );
+        user.setFirstname( s.getFirstname() );
+        user.setLastname( s.getLastname() );
+        user.setPassword( s.getPassword() );
+        user.setEmail( s.getEmail() );
+        user.setMobile( s.getMobile() );
+        user.setIsverified( s.getIsverified() );
 
-        return user.build();
+        return user;
     }
 
     @Override
-    public UserDto convertDto(User arg0) {
-        if ( arg0 == null ) {
+    public UserDto convertDto(User t) {
+        if ( t == null ) {
             return null;
         }
 
         UserDto userDto = new UserDto();
 
-        userDto.setUserid( arg0.getUserid() );
-        userDto.setFirstname( arg0.getFirstname() );
-        userDto.setLastname( arg0.getLastname() );
-        userDto.setPassword( arg0.getPassword() );
-        userDto.setEmail( arg0.getEmail() );
-        userDto.setMobile( arg0.getMobile() );
-        userDto.setIsverified( arg0.getIsverified() );
+        userDto.setUserid( t.getUserid() );
+        userDto.setFirstname( t.getFirstname() );
+        userDto.setLastname( t.getLastname() );
+        userDto.setPassword( t.getPassword() );
+        userDto.setEmail( t.getEmail() );
+        userDto.setMobile( t.getMobile() );
+        userDto.setIsverified( t.getIsverified() );
 
         return userDto;
     }
 
     @Override
-    public List<UserDto> convertDtos(List<User> arg0) {
-        if ( arg0 == null ) {
+    public List<UserDto> convertDtos(List<User> tList) {
+        if ( tList == null ) {
             return null;
         }
 
-        List<UserDto> list = new ArrayList<UserDto>( arg0.size() );
-        for ( User user : arg0 ) {
+        List<UserDto> list = new ArrayList<UserDto>( tList.size() );
+        for ( User user : tList ) {
             list.add( convertDto( user ) );
         }
 
@@ -66,13 +66,13 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public List<User> convertEntities(List<UserDto> arg0) {
-        if ( arg0 == null ) {
+    public List<User> convertEntities(List<UserDto> sList) {
+        if ( sList == null ) {
             return null;
         }
 
-        List<User> list = new ArrayList<User>( arg0.size() );
-        for ( UserDto userDto : arg0 ) {
+        List<User> list = new ArrayList<User>( sList.size() );
+        for ( UserDto userDto : sList ) {
             list.add( convertEntity( userDto ) );
         }
 
