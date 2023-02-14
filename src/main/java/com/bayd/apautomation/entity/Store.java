@@ -3,10 +3,7 @@ package com.bayd.apautomation.entity;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -21,6 +18,7 @@ public class Store extends AbstractEntity implements Serializable {
     @Id
     @Type(type = "uuid-char")
     @Column(name = "storeid")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID storeid;
     @Column(name = "name")
     private String name;

@@ -3,11 +3,10 @@ package com.bayd.apautomation.entity;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,6 +20,7 @@ public class User extends AbstractEntity implements Serializable {
     @Id
     @Type(type = "uuid-char")
     @Column(name = "userid")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID userid;
     @Column(name = "firstname")
     private String firstname;
@@ -34,6 +34,16 @@ public class User extends AbstractEntity implements Serializable {
     private String mobile;
     @Column(name = "isverified")
     private Boolean isverified;
+
+    @OneToMany(mappedBy = "billuser")
+    private List<Bill> bills;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_department",
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "deptid"))
+    private List<Department> userdepartments;
 
     public User() {
         this.userid = UUID.randomUUID();

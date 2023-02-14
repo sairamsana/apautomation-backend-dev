@@ -2,18 +2,18 @@ package com.bayd.apautomation.controller;
 
 import com.bayd.apautomation.dto.LoginDTO;
 import com.bayd.apautomation.dto.ResponseDTO;
+import com.bayd.apautomation.dto.StoreDTO;
 import com.bayd.apautomation.dto.UserDto;
 import com.bayd.apautomation.enums.Status;
 import com.bayd.apautomation.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +46,12 @@ public class LoginController implements AbstractController {
     public ResponseEntity<ResponseDTO> getUserLogin() {
         ResponseDTO response = new ResponseDTO();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{uuid}")
+    public ResponseEntity<ResponseDTO> get(@PathVariable("uuid") UUID uuid) {
+        UserDto userDto = userService.getById(uuid);
+        return Objects.isNull(userDto) ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, userDto);
     }
 
 }

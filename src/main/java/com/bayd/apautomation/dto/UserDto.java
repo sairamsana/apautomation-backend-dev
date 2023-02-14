@@ -3,6 +3,8 @@ package com.bayd.apautomation.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,5 +17,6 @@ public class UserDto extends AbstractDto {
     private String email;
     private String mobile;
     private Boolean isverified;
+    private List<DepartmentDTO> userdepartments;
 
 }

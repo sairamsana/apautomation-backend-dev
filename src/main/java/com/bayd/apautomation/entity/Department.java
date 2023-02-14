@@ -3,11 +3,10 @@ package com.bayd.apautomation.entity;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,10 +20,13 @@ public class Department extends AbstractEntity implements Serializable {
     @Id
     @Type(type = "uuid-char")
     @Column(name = "deptid")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID deptid;
     @Column(name = "name")
     private String name;
 
+    @ManyToMany(mappedBy = "userdepartments")
+    List<User> users;
     public Department() {
         this.deptid = UUID.randomUUID();
     }

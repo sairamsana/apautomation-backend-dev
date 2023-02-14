@@ -1,26 +1,32 @@
 package com.bayd.apautomation.service.impl;
 
 
+import com.bayd.apautomation.dto.DepartmentDTO;
 import com.bayd.apautomation.dto.UserDto;
+import com.bayd.apautomation.entity.Department;
 import com.bayd.apautomation.entity.User;
 import com.bayd.apautomation.enums.Status;
 import com.bayd.apautomation.exception.CustomResourceNotFoundException;
+import com.bayd.apautomation.mapper.DepartmentMapper;
 import com.bayd.apautomation.mapper.UserMapper;
+import com.bayd.apautomation.repository.DepartmentRepo;
 import com.bayd.apautomation.repository.UserRepo;
 import com.bayd.apautomation.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
+
+    private final DepartmentRepo departmentRepo;
     private final UserMapper userMapper = UserMapper.INSTANCE;
+
+    private final DepartmentMapper departmentMapper = DepartmentMapper.INSTANCE;
 //    private final PasswordEncoder passwordEncoder;
 
     public Optional<UserDto> save(UserDto userDto, UUID userUUID) {
@@ -55,10 +61,18 @@ public class UserServiceImpl implements UserService {
                 throw new CustomResourceNotFoundException("Email alraedy exists");
             }
         }
+        User user = new User();
+        user = userMapper.convertEntity(userDto);
+        List<Department> departmentSet = new ArrayList<>();
+        for (DepartmentDTO deptdto: userDto.getUserdepartments()) {
+            Optional<Department> byid = departmentRepo.findById(deptdto.getDeptid());
+            byid.ifPresent(departmentSet::add);
+        }
+        user.setUserdepartments(departmentSet);
 
-        User user = userMapper.convertEntity(userDto);
         userMapper.prepareForCreate(user);
         user.setPassword(user.getPassword());
+
         User save = userRepo.save(user);
 
         save.setPassword(null);
@@ -67,8 +81,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDto> get(UUID uuid) {
+        Optional<User> byId = userRepo.findById(uuid);
         return Optional.empty();
     }
+
+
+    public UserDto getById(UUID uuid) {
+        Optional<User> byId = userRepo.findById(uuid);
+        UserDto userDto = userMapper.convertDto(byId.get());
+
+            if(!byId.get().getUserdepartments().isEmpty()){
+                userDto.setUserdepartments(departmentMapper.convertDtos(byId.get().getUserdepartments()));
+            }
+
+        return userDto;
+//        return userDto;
+    }
+
 
     @Override
     public Status delete(UUID uuid) {
