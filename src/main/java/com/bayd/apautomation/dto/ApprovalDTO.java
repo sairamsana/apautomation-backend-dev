@@ -9,12 +9,12 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ApprovalDTO extends AbstractDto {
-    private UUID approvalid;
+    private UUID appid;
     private String status;
     private String approved_by;
     private String comments;
     private Date approved_on;
-    private BillDTO approvalbill;
+//    private BillDTO approvalbill;
 //    private List<Approval> approvals;
 
 }

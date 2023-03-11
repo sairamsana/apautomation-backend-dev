@@ -32,12 +32,15 @@ com\bayd\apautomation\controller\DepartmentController.class
 com\bayd\apautomation\dto\BillDTO.class
 com\bayd\apautomation\dto\ApprovalDTO.class
 com\bayd\apautomation\entity\Approval$ApprovalBuilder.class
+com\bayd\apautomation\mapper\ApprovalMapperImpl.class
 com\bayd\apautomation\mapper\StoreMapperImpl.class
 com\bayd\apautomation\config\ResourceConfig.class
+com\bayd\apautomation\repository\ApprovalRepo.class
 com\bayd\apautomation\mapper\Mapper.class
 com\bayd\apautomation\controller\StoreController.class
 com\bayd\apautomation\service\BillService.class
 com\bayd\apautomation\mapper\BillMapper.class
+com\bayd\apautomation\mapper\ApprovalMapper.class
 com\bayd\apautomation\entity\Store$StoreBuilder.class
 com\bayd\apautomation\service\impl\BillServiceImpl.class
 com\bayd\apautomation\mapper\UserMapperImpl.class

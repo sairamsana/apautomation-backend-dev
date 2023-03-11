@@ -15,6 +15,7 @@ public interface AbstractController {
         ResponseDTO response = new ResponseDTO();
         response.setStatus(status);
         response.setData(o);
+
         return ResponseEntity.ok(response);
     }
 

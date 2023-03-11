@@ -2,6 +2,7 @@ package com.bayd.apautomation.service.impl;
 
 
 import com.bayd.apautomation.dto.DepartmentDTO;
+import com.bayd.apautomation.dto.LoginDTO;
 import com.bayd.apautomation.dto.UserDto;
 import com.bayd.apautomation.entity.Department;
 import com.bayd.apautomation.entity.User;
@@ -51,24 +52,26 @@ public class UserServiceImpl implements UserService {
     }
 
     public Optional<UserDto> saved(UserDto userDto) {
-        if (Objects.isNull(userDto) || Objects.isNull(userDto.getMobile()) || Objects.isNull(userDto.getEmail()) || userDto.getMobile().isEmpty() || userDto.getEmail().isEmpty()) {
+        if (Objects.isNull(userDto.getEmail()) || userDto.getEmail().isEmpty()) {
             return Optional.empty();
         }
 
-        if (Objects.nonNull(userDto.getEmail())) {
-            Optional<User> byEmail = userRepo.findByEmail(userDto.getEmail());
-            if (byEmail.isPresent()) {
-                throw new CustomResourceNotFoundException("Email alraedy exists");
-            }
+        Optional<User> byEmail = userRepo.findByEmail(userDto.getEmail());
+        if (byEmail.isPresent()) {
+            throw new CustomResourceNotFoundException("Email alraedy exists");
         }
+
         User user = new User();
         user = userMapper.convertEntity(userDto);
-        List<Department> departmentSet = new ArrayList<>();
-        for (DepartmentDTO deptdto: userDto.getUserdepartments()) {
-            Optional<Department> byid = departmentRepo.findById(deptdto.getDeptid());
-            byid.ifPresent(departmentSet::add);
+
+        if (!userDto.getUserdepartments().isEmpty()) {
+            List<Department> departmentSet = new ArrayList<>();
+            for (DepartmentDTO deptdto : userDto.getUserdepartments()) {
+                Optional<Department> byid = departmentRepo.findById(deptdto.getDeptid());
+                byid.ifPresent(departmentSet::add);
+            }
+            user.setUserdepartments(departmentSet);
         }
-        user.setUserdepartments(departmentSet);
 
         userMapper.prepareForCreate(user);
         user.setPassword(user.getPassword());
@@ -90,9 +93,9 @@ public class UserServiceImpl implements UserService {
         Optional<User> byId = userRepo.findById(uuid);
         UserDto userDto = userMapper.convertDto(byId.get());
 
-            if(!byId.get().getUserdepartments().isEmpty()){
-                userDto.setUserdepartments(departmentMapper.convertDtos(byId.get().getUserdepartments()));
-            }
+        if (!byId.get().getUserdepartments().isEmpty()) {
+            userDto.setUserdepartments(departmentMapper.convertDtos(byId.get().getUserdepartments()));
+        }
 
         return userDto;
 //        return userDto;
@@ -105,7 +108,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> login(UserDto userDto) {
+    public Optional<UserDto> login(LoginDTO loginDTO) {
+
+        if(Objects.isNull(loginDTO.getEmail()) && Objects.isNull(loginDTO.getPassword())){
+            throw new CustomResourceNotFoundException("Please enter valid credentials");
+        }
+
+        Optional<User> byUserName = userRepo.findByEmail(loginDTO.getEmail());
+        if (byUserName.isPresent()) {
+            User user = byUserName.get();
+            if (loginDTO.getPassword().equals(user.getPassword())) {
+                UserDto convertDto = userMapper.convertDto(user);
+                convertDto.setPassword(null);
+                return Optional.of(convertDto);
+            }
+        }
         return Optional.empty();
     }
 

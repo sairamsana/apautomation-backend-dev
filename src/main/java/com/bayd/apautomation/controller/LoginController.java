@@ -23,14 +23,20 @@ public class LoginController implements AbstractController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "login")
     public ResponseEntity<ResponseDTO> userLogin(@RequestBody LoginDTO loginDTO) {
-        ResponseDTO response = new ResponseDTO();
-        response.setStatus(Status.SUCCESS);
-        response.setData(loginDTO);
-        return ResponseEntity.ok(response);
+
+        Optional<UserDto> save = Optional.empty();
+        try {
+            save = userService.login(loginDTO);
+        } catch (Exception e) {
+            return getResponseWithErrorData(Status.NOT_FOUND, e.getMessage());
+        }
+
+        return !save.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, save.get());
+
     }
 
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/signup")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "signup")
     public ResponseEntity<ResponseDTO> userRegister(@RequestBody UserDto userDto) {
         Optional<UserDto> save = Optional.empty();
         try {

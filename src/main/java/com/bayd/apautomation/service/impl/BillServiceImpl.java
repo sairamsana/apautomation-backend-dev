@@ -1,11 +1,8 @@
 package com.bayd.apautomation.service.impl;
 
 
-import com.bayd.apautomation.dto.BillDTO;
-import com.bayd.apautomation.dto.BillReqDTO;
-import com.bayd.apautomation.entity.Approval;
-import com.bayd.apautomation.entity.Bill;
-import com.bayd.apautomation.entity.User;
+import com.bayd.apautomation.dto.*;
+import com.bayd.apautomation.entity.*;
 import com.bayd.apautomation.enums.Status;
 import com.bayd.apautomation.exception.CustomResourceNotFoundException;
 import com.bayd.apautomation.mapper.ApprovalMapper;
@@ -45,21 +42,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public BillDTO saveorupdate(BillReqDTO bdto, UUID userUUID) {
-        System.out.println(bdto.toString());
-
-        /*
-         * user exists
-         *
-         * create a first approval status as pedning
-         *
-         * file must not be null
-         *
-         * values should be validated
-         *
-         * return a valid response
-         *
-         * */
+    public ApprovalDTO saveorupdate(BillReqDTO bdto, UUID userUUID) {
         Bill bill = new Bill();
 
         User user = new User();
@@ -75,14 +58,14 @@ public class BillServiceImpl implements BillService {
         String extension = StringUtils.getFilenameExtension(bdto.getBillfile().getOriginalFilename());
         String fileName = user.getUserid().toString() + "-" + new Date().getTime() + "." + extension;
 
-        List<Approval> approvals = new ArrayList<>();
+//        List<Approval> approvals = new ArrayList<>();
         Approval approval = new Approval();
         approval.setStatus("Pending");
         approval.setApprovedBy(user.getFirstname() + " " + user.getLastname());
         approval.setApprovedOn(new Date());
         approvalMapper.prepareForCreate(approval);
 
-        approvals.add(approval);
+//        approvals.add(approval);
 
         bill.setName(bdto.getName());
         bill.setBilldate(new Date());
@@ -94,7 +77,8 @@ public class BillServiceImpl implements BillService {
         billMapper.prepareForCreate(bill);
 
         try {
-            bdto.getBillfile().transferTo(new File("D:\\images\\" + "sana" + bdto.getBillfile().getOriginalFilename()));
+//            bdto.getBillfile().transferTo(new File("D:\\images\\" + "sana" + bdto.getBillfile().getOriginalFilename()));
+            bdto.getBillfile().transferTo(new File("D:\\images\\" + fileName));
 //            Files.copy(businessDto.getBillfile().getInputStream(), this.root.resolve(businessDto.getBillfile().getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -102,15 +86,15 @@ public class BillServiceImpl implements BillService {
 
         approval.setApprovalbill(bill);
 
-
-        Bill save = billRepo.save(bill);
-        approvalRepo.save(approval);
-        return billMapper.convertDto(save);
+//        Bill save = billRepo.save(bill);
+        Approval save = approvalRepo.save(approval);
+        return approvalMapper.convertDto(save);
     }
 
     @Override
     public Optional<BillDTO> get(UUID uuid) {
-        return Optional.empty();
+        Optional<Bill> byId = billRepo.findById(uuid);
+        return byId.map(billMapper::convertDto);
     }
 
     @Override
@@ -119,7 +103,10 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public BillDTO getAllBills() {
-        return null;
+    public BillsDTO getAllBills() {
+        List<Bill> all = billRepo.findAll();
+        BillsDTO billsDTO = new BillsDTO();
+        billsDTO.setBillDTOS(billMapper.convertDtos(all));
+        return billsDTO;
     }
 }

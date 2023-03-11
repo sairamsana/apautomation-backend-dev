@@ -4,9 +4,7 @@ import lombok.Data;
 
 @Data
 public class LoginDTO {
-
-    private String review;
-
-    private String sourceType;
+    private String email;
+    private String password;
 
 }

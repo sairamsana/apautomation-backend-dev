@@ -25,7 +25,7 @@ public class BillController implements AbstractController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/save")
     public ResponseEntity<ResponseDTO> save(@ModelAttribute BillReqDTO billReqDTO, @RequestParam(name = "userId", required = false) UUID userUUID) {
-        BillDTO save = new BillDTO();
+        ApprovalDTO save = new ApprovalDTO();
         try {
             save = billService.saveorupdate(billReqDTO, userUUID);
         } catch (Exception e) {
@@ -36,14 +36,14 @@ public class BillController implements AbstractController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{uuid}")
     public ResponseEntity<ResponseDTO> get(@PathVariable("uuid") UUID uuid) {
-        Optional<DepartmentDTO> DepartmentDTO = departmentService.get(uuid);
-        return !DepartmentDTO.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, DepartmentDTO.get());
+        Optional<BillDTO> billDTO = billService.get(uuid);
+        return !billDTO.isPresent() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, billDTO.get());
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/all")
     public ResponseEntity<ResponseDTO> getAllDepartments() {
-        DepartmentsDTO departmentsDTO = departmentService.getAllDepartments();
-        return departmentsDTO.getDepartmentsDTO().isEmpty() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, departmentsDTO);
+        BillsDTO billsDTO = billService.getAllBills();
+        return billsDTO.getBillDTOS().isEmpty() ? getResponse(Status.FAILED) : getResponseWithData(Status.SUCCESS, billsDTO);
     }
 
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/{uuid}")

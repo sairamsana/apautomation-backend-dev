@@ -14,7 +14,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-12T21:11:22-0500",
+    date = "2023-02-23T19:32:39-0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 1.8.0_351 (Oracle Corporation)"
 )
 public class BillMapperImpl implements BillMapper {
@@ -141,9 +141,9 @@ public class BillMapperImpl implements BillMapper {
 
         Approval approval = new Approval();
 
+        approval.setAppid( approvalDTO.getAppid() );
         approval.setStatus( approvalDTO.getStatus() );
         approval.setComments( approvalDTO.getComments() );
-        approval.setApprovalbill( convertEntity( approvalDTO.getApprovalbill() ) );
 
         return approval;
     }
@@ -213,9 +213,9 @@ public class BillMapperImpl implements BillMapper {
 
         ApprovalDTO approvalDTO = new ApprovalDTO();
 
+        approvalDTO.setAppid( approval.getAppid() );
         approvalDTO.setStatus( approval.getStatus() );
         approvalDTO.setComments( approval.getComments() );
-        approvalDTO.setApprovalbill( convertDto( approval.getApprovalbill() ) );
 
         return approvalDTO;
     }
